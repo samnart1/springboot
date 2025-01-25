@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String deleteCategory(Long categoryId) {
         Category category = categories.stream()
-            .filter(x -> x.getCategoryId().equals(categoryId))
+            .filter(c -> categoryId != null && categoryId.equals(c.getCategoryId()))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found!"));
 
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category updateCategory(Category category, Long categoryId) {
         Optional<Category> optionalCategory = categories.stream()
-            .filter(c -> c.getCategoryId().equals(categoryId))
+            .filter(c -> categoryId != null && categoryId.equals(c.getCategoryId()))
             .findFirst(); 
 
         if (optionalCategory.isPresent()) {
