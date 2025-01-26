@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Version;
 import lombok.Data;
 
 @Data
@@ -15,7 +14,7 @@ public class Category {
     private Long categoryId;
     private String categoryName;
 
-    // @Version
+    // @Version 
     // private Integer version;
 
     public Category(Long categoryId, String categoryName) {
