@@ -33,33 +33,28 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String deleteCategory(Long categoryId) {
-        List<Category> categories = categoryRepository.findAll();
-        Category category = categories.stream()
-            .filter(c -> categoryId != null && categoryId.equals(c.getCategoryId()))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found!"));
-
-        categoryRepository.delete(category);
+        Optional<Category> savedCategoryOptional = categoryRepository.findById(categoryId);
+        
+        Category savedCategory = savedCategoryOptional
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource cannot be found!"));
+        
+        categoryRepository.delete(savedCategory);
         
         return "Category with categoryId: " + categoryId + " deleted successfully!!!";
     }
 
     @Override
     public Category updateCategory(Category category, Long categoryId) {
-        List<Category> categories = categoryRepository.findAll();
+        Optional<Category> savedCategoryOptional = categoryRepository.findById(categoryId);
 
-        Optional<Category> optionalCategory = categories.stream()
-            .filter(c -> categoryId != null && categoryId.equals(c.getCategoryId()))
-            .findFirst(); 
+        Category savedCategory = savedCategoryOptional
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found!"));
+        
+        category.setCategoryId(categoryId);
+        savedCategory = categoryRepository.save(category);
+        return savedCategory;
 
-        if (optionalCategory.isPresent()) {
-            Category existingCategory = optionalCategory.get();
-            existingCategory.setCategoryName(category.getCategoryName());
-            Category savedCategory = categoryRepository.save(existingCategory);
-            return savedCategory;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found!");
-        }
+        
     }
     
 }
