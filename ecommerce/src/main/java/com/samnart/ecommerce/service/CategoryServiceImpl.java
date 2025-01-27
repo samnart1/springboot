@@ -14,11 +14,8 @@ import com.samnart.ecommerce.repository.CategoryRepository;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    // List<Category> categories = new ArrayList<>();
-    // private Long nextId = 1L;
-
     @Autowired
-    private CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     @Override
     public List<Category> getAllCategories() {
@@ -27,34 +24,30 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(Category category) {
-        // category.setCategoryId(nextId++);
-        categoryRepository.save(category); 
+        categoryRepository.save(category);
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
-        Optional<Category> savedCategoryOptional = categoryRepository.findById(categoryId);
-        
-        Category savedCategory = savedCategoryOptional
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource cannot be found!"));
-        
+        Optional<Category> searchedCategory = categoryRepository.findById(categoryId);
+
+        Category savedCategory = searchedCategory
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with ID: " + categoryId + " not found!"));
+
         categoryRepository.delete(savedCategory);
-        
-        return "Category with categoryId: " + categoryId + " deleted successfully!!!";
+
+        return "Category with category ID: " + categoryId + " deleted successfully!";
     }
 
     @Override
     public Category updateCategory(Category category, Long categoryId) {
-        Optional<Category> savedCategoryOptional = categoryRepository.findById(categoryId);
-
-        Category savedCategory = savedCategoryOptional
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found!"));
+        Optional<Category> searchedCategory = categoryRepository.findById(categoryId);
+        
+        Category savedCategory = searchedCategory
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with ID: " + categoryId + " not found!"));
         
         category.setCategoryId(categoryId);
-        savedCategory = categoryRepository.save(category);
-        return savedCategory;
+        categoryRepository.save(category);
 
-        
-    }
-    
-}
+        return savedCategory;
+    }}
