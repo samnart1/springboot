@@ -2,12 +2,16 @@ package com.samnart.ecommerce.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.samnart.ecommerce.exception.APIException;
 import com.samnart.ecommerce.exception.ResourceNotFoundException;
 import com.samnart.ecommerce.model.Category;
+import com.samnart.ecommerce.payload.CategoryResponse;
 import com.samnart.ecommerce.repository.CategoryRepository;
 
 @Service
@@ -15,15 +19,27 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public List<Category> getAllCategories() {
+    public CategoryResponse getAllCategories() {
         List<Category> searchedCategories = categoryRepository.findAll();
         if (searchedCategories.isEmpty()) {
             throw new APIException("No categories found!");
         }
-        return searchedCategories;
+
+        List<CategoryDTO> categoryDTOS = categories.stream()
+            .map(category -> modelMapper.map(category, CategoryDTO.class))
+            .collect(Collectors.toList());
+
+        
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setContent(categoryDTOS);
+
+        return categoryResponse;
     }
 
     @Override
