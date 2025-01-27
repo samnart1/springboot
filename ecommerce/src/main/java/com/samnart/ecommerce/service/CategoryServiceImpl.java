@@ -4,26 +4,38 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
+import com.samnart.ecommerce.exception.APIException;
+import com.samnart.ecommerce.exception.ResourceNotFoundException;
 import com.samnart.ecommerce.model.Category;
 import com.samnart.ecommerce.repository.CategoryRepository;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+
     @Autowired
     CategoryRepository categoryRepository;
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        List<Category> searchedCategories = categoryRepository.findAll();
+        if (searchedCategories.isEmpty()) {
+            throw new APIException("No categories found!");
+        }
+        return searchedCategories;
     }
 
     @Override
     public void createCategory(Category category) {
+        String categoryNameLower = category.getCategoryName().toLowerCase();
+
+        Category savedCategory = categoryRepository.findByCategoryName(categoryNameLower);
+
+        if (savedCategory != null ) {
+            throw new APIException("Category with name " + category.getCategoryName() + " already exists!");
+        }
+
         categoryRepository.save(category);
     }
 
@@ -32,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> searchedCategory = categoryRepository.findById(categoryId);
 
         Category savedCategory = searchedCategory
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with ID: " + categoryId + " not found!"));
+            .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
         categoryRepository.delete(savedCategory);
 
@@ -44,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> searchedCategory = categoryRepository.findById(categoryId);
         
         Category savedCategory = searchedCategory
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with ID: " + categoryId + " not found!"));
+            .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         
         category.setCategoryId(categoryId);
         categoryRepository.save(category);
