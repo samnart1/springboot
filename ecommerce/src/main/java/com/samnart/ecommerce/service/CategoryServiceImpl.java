@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Category category = modelMapper.map(categoryDTO, Category.class);
 
-        String categoryNameLower = categoryDTO.getCategoryName().toLowerCase();
+        String categoryNameLower = category.getCategoryName().toLowerCase();
 
         Category categoryFromDb = categoryRepository.findByCategoryName(categoryNameLower);
 
