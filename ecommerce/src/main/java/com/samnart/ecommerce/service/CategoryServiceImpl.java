@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 
-        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") 
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
             ? Sort.by(sortBy).ascending()
             : Sort.by(sortBy).descending();
 
@@ -45,6 +45,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new APIException("No categories found!");
         }
 
+        // List<CategoryDTO> categoryDTOS = searchedCategories.stream()
+        //     .map(category -> modelMapper.map(category, CategoryDTO.class))
+        //     .collect(Collectors.toList());
+        
         List<CategoryDTO> categoryDTOS = searchedCategories.stream()
             .map(category -> modelMapper.map(category, CategoryDTO.class))
             .collect(Collectors.toList());
@@ -63,15 +67,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        Category category = modelMapper.map(categoryDTO, Category.class);
-
-        String categoryNameLower = category.getCategoryName().toLowerCase();
-
-        Category categoryFromDb = categoryRepository.findByCategoryName(categoryNameLower);
-
-        if (categoryFromDb != null ) {
+        
+        List<Category> allCategories = categoryRepository.findAll();
+        
+        boolean categoryExists = allCategories.stream()
+            .anyMatch(cat -> cat.getCategoryName().equalsIgnoreCase(categoryDTO.getCategoryName()));
+        
+        if (categoryExists) {
             throw new APIException("Category with name " + categoryDTO.getCategoryName() + " already exists!");
         }
+
+        Category category = modelMapper.map(categoryDTO, Category.class);
+       
 
         Category savedCategory = categoryRepository.save(category);
         return modelMapper.map(savedCategory, CategoryDTO.class);
