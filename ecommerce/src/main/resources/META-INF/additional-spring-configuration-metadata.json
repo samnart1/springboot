@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "project.image",
+  "type": "java.lang.String",
+  "description": "A description for 'project.image'"
+}]}
