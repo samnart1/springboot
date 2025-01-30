@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductResponse {
     private List<ProductDTO> content;
-    // Integer pageNumber;
-    // Integer pageSize;
-    // Long totalElements;
-    // Integer totalPages;
-    // boolean lastPage;
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Long totalElements;
+    private Integer totalPages;
+    private boolean lastPage;
 }
