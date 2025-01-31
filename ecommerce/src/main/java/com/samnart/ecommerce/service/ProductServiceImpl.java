@@ -1,12 +1,7 @@
 package com.samnart.ecommerce.service;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -123,9 +118,7 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> pageProducts = productRepository.findByCategoryOrderByPriceAsc(category, pageDetails);
 
         List<Product> products = pageProducts.getContent();
-
-        // List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
-
+        
         List<ProductDTO> productDTOS = products.stream()
             .map(product -> modelMapper.map(product, ProductDTO.class)).toList();
 
@@ -150,8 +143,6 @@ public class ProductServiceImpl implements ProductService {
 
         Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
         Page<Product> pageProducts = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%', pageDetails);
-
-        // List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
 
         List<Product> products = pageProducts.getContent();
 
