@@ -35,6 +35,9 @@ public class SecurityConfig {
         return new AuthTokenFilter();
     }
 
+    public AuthenticationManager authenticationManager (AuthenticationConfiguration builder) throws Exception {
+        return builder.getAuthenticationManager();
+    }
     
 
     @Bean
@@ -65,7 +68,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration builder) throws Exception {
-        return builder.getAuthenticationManager();
-    }
 }
