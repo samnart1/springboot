@@ -44,7 +44,7 @@ public class User {
     private Long userId;
 
     @NotBlank
-    @Size(min = 6, max = 20)
+    @Size(min = 2, max = 20)
     @Column(name = "username")
     private String userName;
 
