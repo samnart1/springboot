@@ -14,8 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
@@ -28,11 +28,12 @@ public class Product {
     @NotBlank
     @Size(min = 3, message = "Product name must be at least 3 characters!")
     private String productName;
-    private String image;
-
+    
     @NotBlank
-    @Size(min = 6, message = "Product description must be at least 6 characters!")
+    @Size(min = 4, message = "Product description must be at least 4 characters!")
     private String description;
+    
+    private String image;
     private Integer quantity;
     private double price;
     private double discount;
@@ -46,3 +47,4 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private User user;
 }
+

@@ -14,19 +14,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity(name = "categories")
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
 
     @NotBlank
-    @Size(min = 5, message = "Category name should be 6 characters or more")
+    @Size(min = 3, message = "Category name must be at least 3 characters!")
     private String categoryName;
-
+    
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 }
+

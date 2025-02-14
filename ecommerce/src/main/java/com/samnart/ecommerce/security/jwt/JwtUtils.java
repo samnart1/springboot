@@ -48,15 +48,12 @@ public class JwtUtils {
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         
-        Date expirationsDate = new Date(System.currentTimeMillis() + jwtExpirationMs);
+        // Date expirationsDate = new Date(System.currentTimeMillis() + jwtExpirationMs);
 
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
             .path("/api")
-            .maxAge(jwtExpirationMs / 1000)
+            .maxAge(24 * 60 * 60)
             .httpOnly(false)
-            .secure(false)
-            .sameSite("Lax")
-            // .expires(expirationsDate)
             .build();
         
         return cookie;
