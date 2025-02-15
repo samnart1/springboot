@@ -1,7 +1,6 @@
 package com.samnart.ecommerce.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
-
     String resourceName;
     String field;
     String fieldName;
@@ -11,15 +10,23 @@ public class ResourceNotFoundException extends RuntimeException {
 
     public ResourceNotFoundException(String resourceName, String field, String fieldName) {
         super(String.format("%s with %s: %s not found!", resourceName, field, fieldName));
+        
         this.resourceName = resourceName;
         this.field = field;
         this.fieldName = fieldName;
     }
-    
+
+
+
     public ResourceNotFoundException(String resourceName, String field, Long fieldId) {
-        super(String.format("%s with %s: %d not found", resourceName, field, fieldId));
+        super(String.format("%s with %s: %d not found!", resourceName, field, fieldId));
+
         this.resourceName = resourceName;
         this.field = field;
         this.fieldId = fieldId;
     }
 }
+
+
+
+
