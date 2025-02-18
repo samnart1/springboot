@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.samnart.ecommerce.exception.APIException;
 import com.samnart.ecommerce.model.User;
 import com.samnart.ecommerce.repository.UserRepository;
 
