@@ -28,8 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Data
-@AllArgsConstructor
+List<org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Address> @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users", uniqueConstraints = {
     @UniqueConstraint(columnNames = "username"),
