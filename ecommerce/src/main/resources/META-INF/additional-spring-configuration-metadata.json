@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "spring.app.jwtSecret",
+    "type": "java.lang.String",
+    "description": "A secret sauce to the application!"
+  },
+  {
+    "name": "spring.app.jwtExpirations",
+    "type": "java.lang.String",
+    "description": "Time taken for jwt cookie to expire"
+  },
+  {
+    "name": "spring.app.jwtCookieName",
+    "type": "java.lang.String",
+    "description": "Cookie name"
+  },
+  {
+    "name": "project.image",
+    "type": "java.lang.String",
+    "description": "Project image"
+  }
+]}
