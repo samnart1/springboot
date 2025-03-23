@@ -1,4 +1,4 @@
-package com.samnart.auto;
+package com.samnart.auto.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
