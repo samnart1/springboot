@@ -1,6 +1,6 @@
 package com.samnart.auto.model;
 
-import java.util.UUID;
+// import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Job {
-
     
-    private String Id = UUID.randomUUID().toString();
+    private Long id;
     private String title;
     private String description;
     private String minSalary;

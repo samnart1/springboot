@@ -2,7 +2,6 @@ package com.samnart.auto.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +16,11 @@ import com.samnart.auto.service.JobService;
 @RequestMapping("/api")
 public class JobController {
 
-    @Autowired
     private JobService jobService;
+
+    public JobController(JobService jobService) {
+        this.jobService = jobService;
+    }
     
     @GetMapping("/jobs")
     public ResponseEntity<List<Job>> findAll() {
