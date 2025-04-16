@@ -1,0 +1,44 @@
+spring:
+    application:
+        name: patient-service
+    datasource:
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/patient_management} 
+        username: ${SPRING_DATASOURCE_USERNAME:admin_user}
+        password: ${SPRING_DATASOURCE_PASSWORD:password}
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                format_sql: true
+        show-sql: true
+
+# spring.h2.console.path=/h2-console
+# spring.datasource.url=jdbc:h2:mem:testdb
+# spring.datasource.driver-class-name=org.h2.Driver
+
+# spring.datasource.username=admin
+# spring.datasource.password=password
+
+# spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# spring.jpa.hibernate.ddl-auto=update
+# spring.sql.init.mode=always
+
+server:
+    port: 4000
+
+# POSTGRES_USER=admin_user
+# POSTGRES_PASSWORD=password
+# POSTGRES_DB=db
+# ports=5000:5432
+# --network internal
+
+
+# spring.datasource.url=jdbc:postgresql://patient-service-db:5432/db
+# spring.datasource.username=admin_user
+# spring.datasource.password=password
+# spring.jpa.hibernate.ddl-auto=update
+# spring.sql.init.mode=always
