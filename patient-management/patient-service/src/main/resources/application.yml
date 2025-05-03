@@ -2,13 +2,18 @@ spring:
     application:
         name: patient-service
     datasource:
-        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/patient_management} 
-        username: ${SPRING_DATASOURCE_USERNAME:admin_user}
-        password: ${SPRING_DATASOURCE_PASSWORD:password}
+        # url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/patient_management} 
+        url: jdbc:postgresql://localhost:5432/postgres
+        # username: ${SPRING_DATASOURCE_USERNAME:admin_user}
+        username: postgres
+        # password: ${SPRING_DATASOURCE_PASSWORD:password}
+        password: Aa1234!@
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
-            ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+            # ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+            ddl-auto: create-drop
+            show-sql: true
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
