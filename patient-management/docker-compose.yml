@@ -34,5 +34,13 @@ services:
       - "4000:4000"
     restart: always
 
+  billing-service:
+    build: 
+      context: ./billing-service
+    container_name: billing-service
+    ports:
+      - "4001:4001"
+    restart: always
+
 volumes:
   postgres-data:
