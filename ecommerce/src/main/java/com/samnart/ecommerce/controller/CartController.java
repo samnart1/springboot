@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.samnart.ecommerce.model.Cart;
 import com.samnart.ecommerce.payload.CartDTO;
+import com.samnart.ecommerce.payload.CartItemDTO;
 import com.samnart.ecommerce.repository.CartRepository;
 import com.samnart.ecommerce.service.CartService;
 import com.samnart.ecommerce.util.AuthUtil;
@@ -31,6 +33,15 @@ public class CartController {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @PostMapping("/cart/create")
+    public ResponseEntity<String> createOrUpdateCart(
+        @RequestBody List<CartItemDTO> cartItems
+    ) {
+        String response = cartService.createOrUpdateCartWithItems(cartItems);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    
     
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> addProductToCar(
