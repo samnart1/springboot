@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.samnart.todo_api.dto.TodoRequest;
 import com.samnart.todo_api.dto.TodoResponse;
@@ -11,7 +12,7 @@ import com.samnart.todo_api.entity.Todo;
 import com.samnart.todo_api.exception.TodoNotFoundException;
 import com.samnart.todo_api.repository.TodoRepository;
 
-import jakarta.transaction.Transactional;
+// import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
@@ -116,20 +117,20 @@ public class TodoServiceImpl implements TodoService {
         return new TodoStats(totalTodos, completedTodos, pendingTodos);
     }
 
-    private TodoResponse convertToResponse(Todo todo) {
-        return TodoResponse.from(todo);
-    }
+    // private TodoResponse convertToResponse(Todo todo) {
+    //     return TodoResponse.from(todo);
+    // }
 
-    private void updateTodoFromRequest(Todo todo, TodoRequest request) {
-        if (request.getTitle() != null) {
-            todo.setTitle(request.getTitle());
-        }
-        if (request.getDescription() != null) {
-            todo.setDescription(request.getDescription());
-        }
-        if (request.getCompleted() != null) {
-            todo.setCompleted(request.getCompleted());  
-        }
-    }
+    // private void updateTodoFromRequest(Todo todo, TodoRequest request) {
+    //     if (request.getTitle() != null) {
+    //         todo.setTitle(request.getTitle());
+    //     }
+    //     if (request.getDescription() != null) {
+    //         todo.setDescription(request.getDescription());
+    //     }
+    //     if (request.getCompleted() != null) {
+    //         todo.setCompleted(request.getCompleted());  
+    //     }
+    // }
     
 }
