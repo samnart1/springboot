@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-
 public class User implements UserDetails {
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
