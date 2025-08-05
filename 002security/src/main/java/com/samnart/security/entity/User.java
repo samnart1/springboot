@@ -87,6 +87,15 @@ public class User implements UserDetails {
     updatedAt = LocalDateTime.now();
   }
 
+  public User(String username, String email, String password, String firstName, String lastName) {
+    //TODO Auto-generated constructor stub
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.firstName = firstName;
+    this.lastName = lastName;
+}
+
   public enum Role {
     USER,
     ADMIN
