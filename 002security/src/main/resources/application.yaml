@@ -1,0 +1,37 @@
+spring:
+    application:
+        name:   security
+
+    datasource:
+        url:    jdbc:h2:mem:testdb
+        driver-class-name: org.h2.Driver
+        username: sa
+        password: password
+
+    h2:
+        console:
+          enabled:  true
+          path:     /h2-console
+
+    jpa:
+        database-platform:  org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto:   create-drop
+        show-sql:   true
+        properties:
+            hibernate:
+                format_sql: true   
+
+    security:
+        user:
+            name:   admin
+            password:   admin 
+
+jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    expiration: 86400000
+
+logging:
+  level:
+    '[org.springframework.security]': DEBUG
+    '[com.samnart.security]': DEBUG
