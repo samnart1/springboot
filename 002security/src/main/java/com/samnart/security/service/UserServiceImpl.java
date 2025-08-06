@@ -1,5 +1,6 @@
 package com.samnart.security.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepo, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }
