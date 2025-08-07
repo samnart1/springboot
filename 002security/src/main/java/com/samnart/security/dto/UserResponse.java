@@ -17,4 +17,13 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private User.Role role;
+
+    public UserResponse(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.role = user.getRole();
+    }
 }
