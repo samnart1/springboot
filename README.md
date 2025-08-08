@@ -33,45 +33,42 @@ This repository serves as my hands-on Spring Boot lab, where I experiment with:
 ⚙️ Core Spring Boot (Projects 1–20)
 Focus: Basics, REST, JPA, Validation, Security
 
-Simple TODO API – CRUD using Spring Web + JPA + H2
 
-User Registration & Login – Spring Security + BCrypt
+3. Product Catalog API – JPA relationships + DTOs
 
-Product Catalog API – JPA relationships + DTOs
+4. File Upload API – Multipart handling + storage
 
-File Upload API – Multipart handling + storage
+5. Pagination and Filtering API
 
-Pagination and Filtering API
+6. Weather Tracker – API client + scheduled updates
 
-Weather Tracker – API client + scheduled updates
+7. Blog Platform Backend – Markdown parsing + CRUD
 
-Blog Platform Backend – Markdown parsing + CRUD
+8. Email Notification Service – Spring Mail + Templates
 
-Email Notification Service – Spring Mail + Templates
+9. SMS Verification Service – Twilio + OTP logic
 
-SMS Verification Service – Twilio + OTP logic
+10. Event Logger – Log4j + log rotation
 
-Event Logger – Log4j + log rotation
+11. REST API Versioning – Header vs URI-based
 
-REST API Versioning – Header vs URI-based
+12. JWT Authentication & Refresh Tokens
 
-JWT Authentication & Refresh Tokens
+13. Rate Limiting Middleware – Spring Filter + Bucket4j
 
-Rate Limiting Middleware – Spring Filter + Bucket4j
+14. Multi-language API Responses – i18n + Messages
 
-Multi-language API Responses – i18n + Messages
+15. Audit Trail System – Spring AOP + DB log
 
-Audit Trail System – Spring AOP + DB log
+16. Role-Based Access Control API
 
-Role-Based Access Control API
+17. Global Exception Handler + Custom Errors
 
-Global Exception Handler + Custom Errors
+18. API Documentation with Swagger/OpenAPI
 
-API Documentation with Swagger/OpenAPI
+19. Application Metrics with Micrometer
 
-Application Metrics with Micrometer
-
-Spring Profiles for Multi-Env Configs
+20. Spring Profiles for Multi-Env Configs
 
 🧩 Microservices (Projects 21–40)
 Focus: Services, Communication, Config, Discovery
