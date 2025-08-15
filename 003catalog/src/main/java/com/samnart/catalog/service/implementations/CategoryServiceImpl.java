@@ -39,20 +39,46 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createCategory'");
+        if (categoryRepo.existsByNameIgnoreCase(categoryDTO.getName())) {
+            throw new IllegalArgumentException("Category with name: " + categoryDTO.getName() + " already exist.");
+        }
+
+        Category category = new Category();
+        category.setName(categoryDTO.getName());
+        category.setDescription(categoryDTO.getDescription());
+        
+        Category savedCategory = categoryRepo.save(category);
+
+        return convertToDTO(savedCategory);
     }
 
     @Override
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateCategory'");
+        Category category = categoryRepo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Category with id: " + id + " not found!"));
+
+        if (!category.getName().equalsIgnoreCase(categoryDTO.getName()) && categoryRepo.existsByNameIgnoreCase(categoryDTO.getName())) {
+            throw new IllegalArgumentException("Category already exist with name: " + categoryDTO.getName());
+        }
+        
+        category.setName(categoryDTO.getName());
+        category.setDescription(categoryDTO.getDescription());
+
+        Category savedCategory = categoryRepo.save(category);
+
+        return convertToDTO(savedCategory);
     }
 
     @Override
     public void deleteCategory(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCategory'");
+        Category category = categoryRepo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+
+        if (!category.getProducts().isEmpty()) {
+            throw new IllegalStateException("Cannot delete category with products in it!");
+        }
+
+        categoryRepo.delete(category);
     }
     
     private CategoryDTO convertToDTO(Category category) {
