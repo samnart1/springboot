@@ -2,6 +2,7 @@ package com.samnart.catalog.service.implementations;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.samnart.catalog.dto.ProductCreateDTO;
 import com.samnart.catalog.dto.ProductDTO;
+import com.samnart.catalog.entity.Category;
 import com.samnart.catalog.entity.Product;
+import com.samnart.catalog.exceptions.ResourceNotFoundException;
 import com.samnart.catalog.repository.CategoryRepository;
 import com.samnart.catalog.repository.ProductRepository;
 import com.samnart.catalog.repository.ReviewRepository;
@@ -31,26 +34,47 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDTO> getAllProducts(Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, String keyword,
             Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllProducts'");
+                Page<Product> products = productRepo.findProductsWithFilters(categoryId, minPrice, maxPrice, keyword, pageable);
+                return products.map(this::convertToDTO);
     }
 
     @Override
     public ProductDTO getProductById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductById'");
+        Product product = productRepo.findByIdWithDetails(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+            return convertToDTO(product);
     }
 
     @Override
     public List<ProductDTO> getProductsByCategory(Long categoryId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductsByCategory'");
+        List<Product> products = productRepo.findByCategoryId(categoryId);
+        return products.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ProductDTO createProduct(ProductCreateDTO productCreateDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProduct'");
+        
+        if (productCreateDTO.getSku() != null && productRepo.findBySkuIgnoreCase(productCreateDTO.getSku()).isPresent()) {
+            throw new IllegalArgumentException("Product with SKU '" + productCreateDTO.getSku() + "' already exists!");
+        }
+
+        Category category = categoryRepo.findById(productCreateDTO.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productCreateDTO.getCategoryId()));
+
+        Product product = new Product();
+        product.setName(productCreateDTO.getName());
+        product.setDescription(productCreateDTO.getDescription());
+        product.setPrice(productCreateDTO.getPrice());
+        product.setStockQuantity(productCreateDTO.getStockQuantity());
+        product.setSku(productCreateDTO.getSku());
+        product.setImageUrl(productCreateDTO.getImageUrl());
+        product.setCategory(category);
+
+        Product savedProduct = productRepo.save(product);
+
+        return convertToDTO(savedProduct);
     }
 
     @Override
