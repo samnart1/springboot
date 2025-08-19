@@ -2,6 +2,7 @@ package com.samnart.catalog.service.implementations;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -79,20 +80,46 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO updateProduct(Long id, ProductCreateDTO productCreateDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
+        Product product = productRepo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        if (productCreateDTO.getSku() != null && !productCreateDTO.getSku().equalsIgnoreCase(product.getSku())) {
+            Optional<Product> existingProduct = productRepo.findBySkuIgnoreCase(productCreateDTO.getSku());
+            if (existingProduct.isPresent() && !existingProduct.get().getId().equals(id)) {
+                throw new IllegalArgumentException("Product already exists with Sku: " + productCreateDTO.getSku());
+            }
+        }
+
+        Category category = categoryRepo.findById(productCreateDTO.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productCreateDTO.getCategoryId()));
+
+        product.setName(productCreateDTO.getName());
+        product.setDescription(productCreateDTO.getDescription());
+        product.setPrice(productCreateDTO.getPrice());
+        product.setStockQuantity(productCreateDTO.getStockQuantity());
+        product.setSku(productCreateDTO.getSku());
+        product.setImageUrl(productCreateDTO.getImageUrl());
+        product.setCategory(category);
+
+        return convertToDTO(product);
     }
 
     @Override
     public ProductDTO toggleProductStatus(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toggleProductStatus'");
+        Product product = productRepo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        product.setActive(!product.getActive());
+        Product savedProduct = productRepo.save(product);
+        return convertToDTO(savedProduct);
     }
 
     @Override
     public void deleteProduct(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+        Product product = productRepo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        productRepo.delete(product);
     }
     
     private ProductDTO convertToDTO(Product product) {
