@@ -34,10 +34,6 @@ This repository serves as my hands-on Spring Boot lab, where I experiment with:
 Focus: Basics, REST, JPA, Validation, Security
 
 
-3. Product Catalog API – JPA relationships + DTOs
-
-4. File Upload API – Multipart handling + storage
-
 5. Pagination and Filtering API
 
 6. Weather Tracker – API client + scheduled updates
@@ -73,45 +69,45 @@ Focus: Basics, REST, JPA, Validation, Security
 🧩 Microservices (Projects 21–40)
 Focus: Services, Communication, Config, Discovery
 
-Microservice Starter Project (Boilerplate)
+21. Microservice Starter Project (Boilerplate)
 
-Service Registry with Eureka
+22. Service Registry with Eureka
 
-Centralized Config Server
+23. Centralized Config Server
 
-Inventory Microservice
+24. Inventory Microservice
 
-Order Microservice with Feign Client
+25. Order Microservice with Feign Client
 
-Notification Microservice (email + Kafka)
+26. Notification Microservice (email + Kafka)
 
-API Gateway using Spring Cloud Gateway
+27. API Gateway using Spring Cloud Gateway
 
-Circuit Breaker with Resilience4J
+28. Circuit Breaker with Resilience4J
 
-Dynamic Routing Gateway + Path Rewrite
+29. Dynamic Routing Gateway + Path Rewrite
 
-Rate Limiting Gateway with Redis
+30. Rate Limiting Gateway with Redis
 
-Configurable Feature Flags
+31. Configurable Feature Flags
 
-Load-balanced Communication (Ribbon)
+32. Load-balanced Communication (Ribbon)
 
-Microservices Tracing with Sleuth + Zipkin
+33. Microservices Tracing with Sleuth + Zipkin
 
-Service Health Dashboard with Actuator
+34. Service Health Dashboard with Actuator
 
-Distributed Logging with ELK Stack
+35. Distributed Logging with ELK Stack
 
-Service Mesh Demo (Istio)
+36. Service Mesh Demo (Istio)
 
-gRPC Communication between Services
+38. gRPC Communication between Services
 
-GraphQL API Gateway (Spring Boot + GraphQL)
+39. GraphQL API Gateway (Spring Boot + GraphQL)
 
-Token Relay across Services (OAuth2)
+40. Token Relay across Services (OAuth2)
 
-Multi-tenant Microservices with Schema Isolation
+41. Multi-tenant Microservices with Schema Isolation
 
 🛠️ Data & Messaging (Projects 41–60)
 Focus: Databases, Messaging Systems
