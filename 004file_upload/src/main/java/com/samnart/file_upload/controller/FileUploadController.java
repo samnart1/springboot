@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,4 +105,42 @@ public class FileUploadController {
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileInfo.getOriginalFilename() + "\"")
             .body(resource);
     }
+
+    @GetMapping
+    public ResponseEntity<List<FileInfoResponse>> getAllFiles() {
+        logger.info("list of all files");
+
+        List<FileInfoResponse> files = service.getAllfiles();
+        return new ResponseEntity<>(files, HttpStatus.OK);
+    }
+
+    @GetMapping("/info/{filename:.+}")
+    public ResponseEntity<FileInfoResponse> getFileInfo(@PathVariable String filename) {
+        logger.info("Received file info request: {}", filename);
+        FileInfoResponse fileInfo = service.getFileInfo(filename);
+        return new ResponseEntity<>(fileInfo, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{filename:.+}")
+    public ResponseEntity<Map<String, String>> deleteFile(@PathVariable String filename) {
+        logger.info("delete request: {}", filename);
+
+        service.deleteFile(filename);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "deleted successfully");
+        response.put("filename", filename);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<Map<String, String>> healthCheck() {
+        Map<String, String> status = new HashMap<>();
+        status.put("status", "UP");
+        status.put("service", "File Upload API");
+        status.put("timestamp", String.valueOf(System.currentTimeMillis()));
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+    
 }
