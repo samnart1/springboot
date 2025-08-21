@@ -1,6 +1,5 @@
 package com.samnart.file_upload.service.implementation;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -8,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -22,6 +22,7 @@ import com.samnart.file_upload.config.FileStorageConfig;
 import com.samnart.file_upload.dto.FileInfoResponse;
 import com.samnart.file_upload.dto.FileUploadResponse;
 import com.samnart.file_upload.entity.FileMetadata;
+import com.samnart.file_upload.exceptions.FileNotFoundException;
 import com.samnart.file_upload.exceptions.FileStorageException;
 import com.samnart.file_upload.repository.FileMetadataRepository;
 import com.samnart.file_upload.service.interfaces.FileStorageService;
@@ -124,33 +125,59 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public FileInfoResponse getFileInfo(String filename) {
-        try {
-            FileMetadata metadta = fileMetadataRepo.findByStoredFilename(filename)
-                .orElseThrow(() -> new FileNotFoundException("file not found: " + filename));
+        FileMetadata metadata = fileMetadataRepo.findByStoredFilename(filename)
+            .orElseThrow(() -> new FileNotFoundException("File not found: " + filename));
 
-            return mapToFileInfoResponse(metadta);
+        return mapToFileInfoResponse(metadata);
+        // try {
+        //     FileMetadata metadta = fileMetadataRepo.findByStoredFilename(filename)
+        //         .orElseThrow(() -> new FileNotFoundException("file not found: " + filename));
 
-        } catch(Exception ex) {
-            throw new FileNotFoundException("file not found: " + filename, ex);
-        }
+        //     return mapToFileInfoResponse(metadta);
+
+        // } catch(Exception ex) {
+        //     throw new FileNotFoundException("file not found: " + filename, ex);
+        // }
     }
 
     @Override
     public void deleteFile(String filename) {
-        try {
-            FileMetadata metadata = fileMetadataRepo.findByStoredFilename(filename)
+        FileMetadata metadata = fileMetadataRepo.findByStoredFilename(filename)
                 .orElseThrow(() -> new FileNotFoundException("file not found: " + filename));
 
-            fileMetadataRepo.delete(metadata);
-
-        } catch(IOException ex) {
-            throw new FileStorageException("could not delete file " + filename, ex);
-        }
+        fileMetadataRepo.delete(metadata);
     }
     
     private void validateFile(MultipartFile file) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateFile'");
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Cannot upload an empty file");
+        }
+
+        if (file.getSize() > config.getMaxFileSize()) {
+            throw new IllegalArgumentException("file exceeds allowed max size of " + config.getMaxFileSize());
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null) {
+            throw new IllegalArgumentException("file name cannot be empty");
+        }
+
+        String extension = getFileExtension(originalFilename).toLowerCase();
+        if (!config.getAllowedExtensions().contains(extension)) {
+            throw new IllegalArgumentException("extension not allowed. allowed types: " + config.getAllowedExtensions());
+        }
+    }
+
+    private String getFileExtension(String filename) {
+        int lastDotIndex = filename.lastIndexOf(".");
+        if (lastDotIndex == -1) {
+            return "";
+        }
+        return filename.substring(lastDotIndex + 1);
+    }
+    
+    private String generateUniqueFilename(String extension) {
+        return UUID.randomUUID().toString() + "." + extension;
     }
 
     private FileInfoResponse mapToFileInfoResponse(FileMetadata metadata) {

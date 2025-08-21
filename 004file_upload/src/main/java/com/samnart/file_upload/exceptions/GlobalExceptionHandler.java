@@ -1,5 +1,6 @@
 package com.samnart.file_upload.exceptions;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,14 @@ public class GlobalExceptionHandler {
         logger.error("Invalid argument", ex);
         Map<String, Object> error = new HashMap<>();
         error.put("Invalid argument", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MalformedURLException.class)
+    public ResponseEntity<Map<String, Object>> handleMalformedUrlException(MalformedURLException ex) {
+        logger.error("Malformed url exception", ex);
+        Map<String, Object> error = new HashMap<>();
+        error.put("Malformed url exception", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
