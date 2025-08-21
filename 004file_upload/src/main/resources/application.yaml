@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: file_upload
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+    
+  datasource:
+    url: jdbc:h2:mem:filedb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+file:
+  upload-dir: uploads
+  max-file-size: 10485760 
+  allowed-extensions:
+    - jpg
+    - jpeg
+    - png
+    - git
+    - pdf
+    - txt
+    - docx
+    - xlsx
+
+server:
+  port: 8080
+
+logging:
+  level:
+    '[com.samnart.file_upload]': DEBUG        
+        
