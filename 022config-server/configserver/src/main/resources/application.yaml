@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://${user.home}/microservices-configserver/config-repo
+          default-label: main
+          clone-on-start: true
+        health:
+          repositories:
+            samnart:
+                label: main
+                name: user-service,order-service,notification-service
+
+  profiles:
+    active: native
+
+server:
+  port: 8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+  endpoint:
+    health:
+      show-details: always
