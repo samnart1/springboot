@@ -71,8 +71,6 @@ Focus: Services, Communication, Config, Discovery
 
 21. Microservice Starter Project (Boilerplate)
 
-22. Service Registry with Eureka
-
 23. Centralized Config Server
 
 24. Inventory Microservice
@@ -101,13 +99,13 @@ Focus: Services, Communication, Config, Discovery
 
 36. Service Mesh Demo (Istio)
 
-38. gRPC Communication between Services
+37. gRPC Communication between Services
 
-39. GraphQL API Gateway (Spring Boot + GraphQL)
+38. GraphQL API Gateway (Spring Boot + GraphQL)
 
-40. Token Relay across Services (OAuth2)
+39. Token Relay across Services (OAuth2)
 
-41. Multi-tenant Microservices with Schema Isolation
+40. Multi-tenant Microservices with Schema Isolation
 
 🛠️ Data & Messaging (Projects 41–60)
 Focus: Databases, Messaging Systems
