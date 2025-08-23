@@ -1,11 +1,11 @@
 spring:
   application:
-    name: configserver
+    name: config-server
   cloud:
     config:
       server:
         git:
-          uri: file://${user.home}/microservices-configserver/config-repo
+          uri: file://${user.home}/hub/github/springboot/023configserver/config-repo
           default-label: main
           clone-on-start: true
         health:
