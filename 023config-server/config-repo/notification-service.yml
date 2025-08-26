@@ -1,0 +1,40 @@
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-id-address: true
+
+spring:
+  application:
+    name: notification-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+  endpoint:
+    health:
+      show-details: true
+
+app:
+  version: 1.0
+  environment: development
+  notification:
+    email:
+      enabled: true
+      smtp-host: smtp.gmail.com
+      smtp-port: 587
+    sms:
+      enabled: false
+      provider: twilio
+    
+logging:
+  level:
+    com.samnart.notification-service: DEBUG
