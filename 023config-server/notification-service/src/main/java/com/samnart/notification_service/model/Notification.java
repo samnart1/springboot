@@ -30,11 +30,11 @@ public class Notification {
         this.type = type;
     }
 
-    enum NotificationType {
+    public enum NotificationType {
         EMAIL, SMS, PUSH
     }
 
-    enum NotificationStatus {
+    public enum NotificationStatus {
         PENDING, SENT, FAILED, DELIVERED
     }
 }

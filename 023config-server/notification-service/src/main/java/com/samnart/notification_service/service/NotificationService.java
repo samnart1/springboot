@@ -1,5 +1,6 @@
 package com.samnart.notification_service.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.samnart.notification_service.model.Notification;
+import com.samnart.notification_service.model.Notification.NotificationStatus;
+import com.samnart.notification_service.model.Notification.NotificationType;
 
 @Service
 public class NotificationService {
@@ -32,8 +35,55 @@ public class NotificationService {
 
     public Notification sendNotification(Notification notification) {
         try {
-            
+            if (notification.getType() == NotificationType.EMAIL && emailEnabled) {
+                sendEmailNotification(notification);
 
+            } else if (notification.getType() == NotificationType.SMS && smsEnabled) {
+                sendSMSNotification(notification);
+            }
+
+            notification.setStatus(NotificationStatus.SENT);
+            notification.setSentAt(LocalDateTime.now());
+
+        } catch (Exception e) {
+            notification.setStatus(NotificationStatus.FAILED);
+            notification.setSentAt(LocalDateTime.now());
         }
+
+        notifications.put(notification.getId(), notification);
+        return notification;
+    }
+
+    private void sendEmailNotification(Notification notification) {
+        System.out.println("Sending EMAIL notification to: " + notification.getRecipient());
+        System.out.println("Subject: " + notification.getSubject());
+        System.out.println("Message: " + notification.getMessage());
+
+        try {
+            Thread.sleep(100);
+
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void sendSMSNotification(Notification notification) {
+
+        System.out.println("Sending SMS notification to: " + notification.getRecipient());
+        System.out.println("Message: " + notification.getMessage());
+        System.out.println();
+
+        try {
+            Thread.sleep(50);
+
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public List<Notification> getNotificationsByRecipient(String recipient) {
+        return notifications.values().stream()
+            .filter(n -> n.getRecipient().equals(recipient))
+            .toList();
     }
 }
