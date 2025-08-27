@@ -12,7 +12,7 @@ import com.samnart.order_service.model.Order.OrderStatus;
 import com.samnart.order_service.repository.OrderRepository;
 
 @Service
-public class UserService {
+public class OrderService {
     
     @Autowired
     private UserServiceClient userServiceClient;
