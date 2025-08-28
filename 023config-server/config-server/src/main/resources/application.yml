@@ -4,15 +4,19 @@ spring:
   cloud:
     config:
       server:
-        git:
-          uri: file://${user.home}/hub/github/springboot/023configserver/config-repo
-          default-label: main
-          clone-on-start: true
+        native:
+          search-locations: file://${user.home}/hub/github/springboot/023config-server/config-repo
+        #   uri: 
+        #   default-label: main
+        #   clone-on-start: true
         health:
           repositories:
-            samnart:
-                label: main
-                name: user-service,order-service,notification-service
+            services:
+              name: api-gateway,eureka-server,user-service,order-service,notification-service,
+              profiles: default
+            # config-repo:
+            #     label: main
+            #     name: user-service,order-service,notification-service
 
   profiles:
     active: native
