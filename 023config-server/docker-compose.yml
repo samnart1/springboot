@@ -1,0 +1,74 @@
+services:
+    config-server:
+        build: ./config-server
+        ports:
+            - "8888:8888"
+        environment:
+            - SPRING_PROFILES_ACTIVE=docker
+        volumes:
+            - ./config-repo:/config-repo
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+    
+    eureka-server:
+        build: ./eureka-server
+        ports:
+            - "8761:8761"
+        depends_on:
+            config-server:
+                condition: service_healthy
+        environment:
+            - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+        healthcheck:
+            test: ["CMD", "curl", "-f", "https://localhost:8761/actuator/health"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            
+    api-gateway:
+        build: ./api-gateway
+        ports:
+            - "8080:8080"
+        depends_on:
+            eureka-server:
+                condition: service_healthy
+        environment:
+            - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+    user-service:
+        build: ./user-service
+        ports:
+            - "8081:8081"
+        depends_on:
+            eureka-server:
+                condition: service_healthy
+        environment:
+            - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+    order-service:
+        build: ./order-service
+        ports:
+            - "8082:8082"
+        depends_on:
+            - eureka-server
+            - user-service
+        environment:
+            - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+    notification-service:
+        build: ./notification-service
+        ports:
+            - "8083:8083"
+        depends_on:
+            eureka-server:
+                condition: service_healthy
+        environment:
+            - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+        
