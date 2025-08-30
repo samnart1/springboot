@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file://${user.home}/hub/github/springboot/023config-server/config-repo
+        #   uri: 
+        #   default-label: main
+        #   clone-on-start: true
+        health:
+          repositories:
+            services:
+              name: api-gateway,eureka-server,user-service,order-service,notification-service,
+              profiles: default
+            # config-repo:
+            #     label: main
+            #     name: user-service,order-service,notification-service
+
+  profiles:
+    active: native
+
+server:
+  port: 8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+  endpoint:
+    health:
+      show-details: always
