@@ -71,8 +71,6 @@ Focus: Services, Communication, Config, Discovery
 
 21. Microservice Starter Project (Boilerplate)
 
-23. Centralized Config Server
-
 24. Inventory Microservice
 
 25. Order Microservice with Feign Client
