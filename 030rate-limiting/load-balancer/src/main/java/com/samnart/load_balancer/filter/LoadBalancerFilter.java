@@ -2,6 +2,7 @@ package com.samnart.load_balancer.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -19,11 +20,12 @@ public class LoadBalancerFilter implements GlobalFilter, Ordered {
     
     private static final Logger logger = LoggerFactory.getLogger(LoadBalancerFilter.class);
 
+    @Autowired
     private MetricsService metricsService;
 
-    public LoadBalancerFilter(MetricsService metricsService) {
-        this.metricsService = metricsService;
-    }
+    // public LoadBalancerFilter(MetricsService metricsService) {
+    //     this.metricsService = metricsService;
+    // }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

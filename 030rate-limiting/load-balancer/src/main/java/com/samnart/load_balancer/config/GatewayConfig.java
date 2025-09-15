@@ -8,12 +8,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 
+import com.samnart.load_balancer.filter.LoggingFilter;
+import com.samnart.load_balancer.filter.LoadBalancerFilter;
+
 @Configuration
 public class GatewayConfig {
     
     @Bean
     public GlobalFilter customGlobalFilter() {
-        return new LoadBalanceFilter();
+        return new LoadBalancerFilter();
     }
 
     @Bean
