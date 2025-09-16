@@ -1,0 +1,116 @@
+server:
+    port: 8080
+
+
+spring:
+    application:
+        name: load-balancer
+
+    cloud:
+        gateway:
+          routes:
+          - id: api-gateway-route
+            uri: lb://api-gateway
+            predicates:
+            - Path=/api/**
+            filters:
+            - name: CircuitBreaker
+              args:
+                name: api-gateway-circuit-breaker
+                fallbackUri: forward:/fallback
+            - name: Retry
+              args:
+                retries: 3
+                statuses: BAD_GATEWAY,GATEWAY_TIMEOUT
+                methods: GET,POST,PUT,DELETE
+                backoff:
+                    firstBackoff: 50ms
+                    maxBackoff: 500ms
+                    factor: 2
+                    basedOnPreviousValue: false
+
+          - id: health-check-route
+            uri: lb://api-gateway
+            predicates:
+            - Path=/actuator/health
+            filters:
+            - StripPrefix=0
+
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+            
+          default-filters:
+          - name: RequestRateLimiter
+            args:
+              redis-rate-limiter.replenishRate: 100
+              redis-rate-limiter.burstCapacity: 200
+              redis-rate-limiter.requestedTokens: 1
+            
+    data:
+        redis:
+          host: localhost
+          port: 6379
+          timeout: 2000ms
+          lettuce:
+            pool:
+              max-active: 20
+              max-idle: 10
+              min-idle: 5
+            
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,circuitbreakers
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  health:
+    circuitbreakers:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+logging:
+  level: 
+    '[org.springframework.cloud.gateway]': DEBUG
+    '[com.samnart.load_balancer]': INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+load-balancer:
+    api-gateway:
+        instances:
+            - host: localhost
+              port: 8081
+              weight: 1
+              enabled: true
+            - host: localhost
+              port: 8082
+              weight: 1
+              enabled: true
+            - host: localhost
+              port: 8083
+              weight: 1
+              enabled: true
+        health-check:
+            interval: 30s
+            timeout: 50s
+            failure-threshold: 3
+            success-threshold: 2
