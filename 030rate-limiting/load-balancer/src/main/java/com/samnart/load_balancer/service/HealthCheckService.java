@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.actuate.health.Health;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,7 +26,7 @@ public class HealthCheckService {
         this.properties = properties;
     }
 
-    @Scheduled(fixedDelay = "#{@loadBalancerProperties.healthCheck.interval.toMillis()}")
+    @Scheduled(fixedDelayString = "#{@loadBalancerProperties.healthCheck.interval.toMillis()}")
     public void performHealthChecks() {
         properties.getApiGateway().getInstances().forEach(instance -> {
             String instanceKey = instance.getHost() + ":" + instance.getPort();
@@ -74,7 +73,7 @@ public class HealthCheckService {
 
     public boolean isInstanceHealthy(String instanceKey) {
         HealthStatus status = healthStatusMap.get(instanceKey);
-        return status = null || status.isHealthy;
+        return status == null || status.isHealthy;
     }
 
     private static class HealthStatus {
