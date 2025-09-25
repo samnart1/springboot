@@ -26,8 +26,9 @@ public class RedisConfig {
             .hashKey(jsonSerializer)
             .build();
 
-        return new ReactiveRedisTemplate<>(connectionFactory, context);
+            return new ReactiveRedisTemplate<>(connectionFactory, context);
     }
+
     
     @Bean
     public RedisScript<Long> tokenBucketScript() {
