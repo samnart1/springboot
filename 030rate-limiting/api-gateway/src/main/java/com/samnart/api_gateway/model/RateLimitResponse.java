@@ -38,12 +38,12 @@ public class RateLimitResponse {
     public void setReason(String reason) { this.reason = reason; }
     public void setLimit(long limit) { this.limit = limit; }
     public void setWindowSize(long windowSize) { this.windowSize = windowSize; }
-    boolean getAllowed() { return allowed; }
-    long getRemainingRequests() { return remainingRequests; }
-    long getResetTime() { return resetTime; }
-    long getRetryAfter() { return retryAfter; }
-    String getAlgorithm() { return algorithm; }
-    String getReason() { return reason; }
-    long getLimit() { return limit; }
-    long getWindowSize() { return windowSize; }
+    public boolean isAllowed() { return allowed; }
+    public long getRemainingRequests() { return remainingRequests; }
+    public long getResetTime() { return resetTime; }
+    public long getRetryAfter() { return retryAfter; }
+    public String getAlgorithm() { return algorithm; }
+    public String getReason() { return reason; }
+    public long getLimit() { return limit; }
+    public long getWindowSize() { return windowSize; }
 }
