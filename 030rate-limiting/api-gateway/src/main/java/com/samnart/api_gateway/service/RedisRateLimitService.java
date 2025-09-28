@@ -1,5 +1,6 @@
 package com.samnart.api_gateway.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,7 +8,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.gateway.support.ConfigurationService;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
@@ -106,8 +106,8 @@ public class RedisRateLimitService implements RateLimitService {
             .map(allRules -> {
                 List<RateLimitRule> applicableRules = new ArrayList<>();
 
-                for (RateLimitRule rule : allrules) {
-                    if (isRuleApplication(request, rules)) {
+                for (RateLimitRule rule : allRules) {
+                    if (isRuleApplicable(request, rule)) {
                         applicableRules.add(rule);
                     }
                 }
@@ -123,16 +123,81 @@ public class RedisRateLimitService implements RateLimitService {
             .onErrorReturn(List.of(createGlobalRule()));
     }
 
+    private boolean isRuleApplicable(RateLimitRequest request, RateLimitRule rule) {
+        if (!rule.isEnabled()) {
+            return false;
+        }
+
+        if (rule.getExemptIps() != null && rule.getExemptIps().contains(request.getIpAddress())) {
+            return false;
+        }
+
+        if (rule.getExemptUsers() != null && request.getUserId() != null && rule.getExemptUsers().contains(request.getUserId())) {
+            return false;
+        }
+
+        if (rule.getPath() != null && !rule.getPath().isEmpty()) {
+            if (!pathMatcher.match(rule.getPath(), request.getPath())) {
+                return false;
+            }
+        }
+
+        if (rule.getMethod() != null && !rule.getMethod().isEmpty()) {
+            if (!rule.getMethod().equalsIgnoreCase(request.getMethod())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private RateLimitRule createGlobalRule() {
+        RateLimitRule globalRule = new RateLimitRule();
+        globalRule.setId("global-default");
+        globalRule.setName("Global Default Rule");
+        globalRule.setIdentifier("ip");
+        globalRule.setLimit(properties.getGlobalRule().getLimit());
+        globalRule.setWindow(properties.getGlobalRule().getWindow());
+        globalRule.setAlgorithm(properties.getGlobalRule().getAlgorithm());
+        globalRule.setPriority(0);
+        return globalRule;
+    }
+
+    private boolean isWhitelistedIp(String ipAddress) {
+        if (properties.getIpWhitelist() == null || ipAddress == null) {
+            return false;
+        }
+
+        return properties.getIpWhitelist().stream()
+            .anyMatch(whitelistEntry -> ipMatches(ipAddress, whitelistEntry));
+    }
+
+    private boolean ipMatches(String ipAddress, String pattern) {
+        return pattern.equals(ipAddress) || pattern.equals("*");
+    }
+
+    private boolean isExemptPath(String path) {
+        if (properties.getExemptPaths() == null || path == null) {
+            return false;
+        }
+
+        return properties.getExemptPaths().stream()
+            .anyMatch(exemptPath -> pathMatcher.match(exemptPath, path));
+    }
+
     @Override
     public Mono<Void> resetRateLimit(String identifier) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resetRateLimit'");
+        String pattern = "rate_limit:*:" + identifier + "*";
+        return redisTemplate.keys(pattern)    
+            .flatMap(redisTemplate::delete)
+            .then()
+            .doOnSuccess(unused -> logger.info("Reset rate limit for identifier: {}", identifier))
+            .doOnError(error -> logger.error("Failed to reset rate limit for identifier: {}", identifier));
     }
 
     @Override
     public Mono<Long> getRemainingRequests(String identifier) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRemainingRequests'");
+        return Mono.just(0L);
     }
     
 

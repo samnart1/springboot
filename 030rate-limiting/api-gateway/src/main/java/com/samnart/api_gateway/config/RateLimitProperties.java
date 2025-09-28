@@ -24,12 +24,12 @@ public class RateLimitProperties {
         private Duration window = Duration.ofHours(1);
         private String algorithm = "token_bucket";
 
-        private int getLimit() { return limit; }
-        private void setLimit(int limit) { this.limit = limit; }
-        private Duration getWindow() { return window; }
-        private void setWindow(Duration window) { this.window = window; }
-        private String getAlgorithm() { return algorithm; }
-        private void setAlgorithm(String algorithm) { this.algorithm = algorithm; }
+        public int getLimit() { return limit; }
+        public void setLimit(int limit) { this.limit = limit; }
+        public Duration getWindow() { return window; }
+        public void setWindow(Duration window) { this.window = window; }
+        public String getAlgorithm() { return algorithm; }
+        public void setAlgorithm(String algorithm) { this.algorithm = algorithm; }
     }
 
     public static class EndpointRule {
@@ -38,14 +38,14 @@ public class RateLimitProperties {
         private String algorithm;
         private Map<String, Integer> methodLimits;
 
-        private int getLimit() { return limit; }
-        private void setLimit(int limit) { this.limit = limit; }
-        private Duration getWindow() { return window; }
-        private void setWindow(Duration window) { this.window = window; }
-        private Map<String, Integer> getMethodLimits() { return methodLimits; }
-        private void setMethodLimits(Map<String, Integer> methodLimits) { this.methodLimits = methodLimits; }
-        private String getAlgorithm() { return algorithm; }
-        private void setAlgorithm(String algorithm) { this.algorithm = algorithm; }
+        public int getLimit() { return limit; }
+        public void setLimit(int limit) { this.limit = limit; }
+        public Duration getWindow() { return window; }
+        public void setWindow(Duration window) { this.window = window; }
+        public Map<String, Integer> getMethodLimits() { return methodLimits; }
+        public void setMethodLimits(Map<String, Integer> methodLimits) { this.methodLimits = methodLimits; }
+        public String getAlgorithm() { return algorithm; }
+        public void setAlgorithm(String algorithm) { this.algorithm = algorithm; }
     }
 
     public static class ClientRule {
