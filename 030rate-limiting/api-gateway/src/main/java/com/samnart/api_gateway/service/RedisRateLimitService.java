@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.data.redis.core.script.RedisScript;
+// import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 
@@ -17,7 +17,7 @@ import com.samnart.api_gateway.config.RateLimitProperties;
 import com.samnart.api_gateway.model.RateLimitRequest;
 import com.samnart.api_gateway.model.RateLimitResponse;
 import com.samnart.api_gateway.model.RateLimitRule;
-import com.samnart.api_gateway.util.KeyGenerator;
+// import com.samnart.api_gateway.util.KeyGenerator;
 import com.samnart.api_gateway.util.RateLimitAlgorithm;
 
 import reactor.core.publisher.Mono;
@@ -36,8 +36,8 @@ public class RedisRateLimitService implements RateLimitService {
     @Autowired
     private ConfigurationService configurationService;
 
-    @Autowired
-    private KeyGenerator keyGenerator;
+    // @Autowired
+    // private KeyGenerator keyGenerator;
 
     private final Map<String, RateLimitAlgorithm> algorithms;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
